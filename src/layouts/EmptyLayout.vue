@@ -6,7 +6,17 @@
 
 <script>
 export default {
-  name: "EmptyLayout"
+  name: "EmptyLayout",
+  computed:{
+    error() {
+   return    this.$store.getters.error
+    }
+  },
+  watch:{
+    error(fberror) {
+      console.log('fberror', fberror)
+    }
+  }
 }
 </script>
 

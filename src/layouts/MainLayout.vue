@@ -30,6 +30,9 @@ export default {
       isFetcghing: true
     }
   },
+  mounted() {
+    const userInfo=this.$store.dispatch('getUserInfo')
+  }
   components: {
     SideBar,
     Navbar

@@ -5,7 +5,7 @@
         <a href="#" @click.prevent="$emit('click')">
           <i class="material-icons black-text">dehaze</i>
         </a>
-        <span class="black-text">{{date | date('datetime')}}</span>
+        <span class="black-text">{{ date | date('datetime') }}</span>
       </div>
 
       <ul class="right hide-on-small-and-down">
@@ -17,7 +17,7 @@
               ref="dropdown"
           >
             USER NAME
-<!--            <i class="material-icons right">arrow_drop_down</i>-->
+            <!--            <i class="material-icons right">arrow_drop_down</i>-->
           </a>
 
           <ul id='dropdown' class='dropdown-content'>
@@ -41,33 +41,34 @@
 
 <script>
 export default {
-name: "Navbar",
-  data(){
-  return {
-    date:  Date(),
-    interval:null,
-    dropdown:null
-  }
+  name: "Navbar",
+  data() {
+    return {
+      date: Date(),
+      interval: null,
+      dropdown: null
+    }
   },
   mounted() {
-  this.interval=setInterval(()=>{
-    this.date=new Date()
-  },1000)
-   this.dropdown=M.Dropdown.init(this.$refs.dropdown,{
-    constrainWidth:true
-  })
-  //M.Dropdown.init()
+    this.interval = setInterval(() => {
+      this.date = new Date()
+    }, 1000)
+    this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
+      constrainWidth: true
+    })
+    //M.Dropdown.init()
   },
-  methods:{
-  logout(){
-    console.log('logout')
-this.$router.push('/login?message=logout')
+  methods: {
+    async logout() {
+      console.log('logout')
+      await this.$store.dispatch('logout')
+      this.$router.push('/login?message=logout')
     }
   },
   beforeDestroy() {
-  console.log('beforeDestroy')
+    console.log('beforeDestroy')
     clearInterval(this.interval)
-    if(this.dropdown && this.dropdown.destroy){
+    if (this.dropdown && this.dropdown.destroy) {
       this.dropdown.destroy()
     }
 

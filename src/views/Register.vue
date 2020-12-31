@@ -44,7 +44,7 @@
           <input
               v-model="agree"
               type="checkbox"
-          :class="{invalid:($v.agree)}"
+              :class="{invalid:($v.agree)}"
           />
           <span>С правилами согласен</span>
         </label>
@@ -82,35 +82,39 @@ export default {
       email: '',
       password: '',
       name: '',
-      agree:false
+      agree: false
     }
   },
   methods: {
-    submit() {
+    async submit() {
       // console.log('$invalid', this.$v.$invalid)
       // console.log('name', this.name)
       // console.log('email', this.email)
       // console.log('password', this.password)
-      if (this.$v.$invalid){
+      if (this.$v.$invalid) {
         this.$v.$touch()
         return
       }
-      const formData={
-        name:this.name,
-        email:this.email,
-        password:this.password
+      const formData = {
+        name: this.name,
+        email: this.email,
+        password: this.password
       }
-      M.toast({html:'I am toast'})
-      console.log('formadataregister',formData)
-      this.$router.push('/login')
+      M.toast({html: 'I am toast'})
+      console.log('formadataregister', formData)
 
-    }
+      try {
+        await this.$store.dispatch('register', formData)
+        this.$router.push('/login')
+      } catch (e) {
+      }
+         }
   },
   validations: {
     name: {required, minLength: minLength(5)},
     email: {required, email},
     password: {required, minLength: minLength(10)},
-    agree:{checked: v=>v}
+    agree: {checked: v => v}
 
   }
 }
