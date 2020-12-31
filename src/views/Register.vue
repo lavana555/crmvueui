@@ -1,0 +1,121 @@
+<template>
+  <form class="card auth-card" @submit.prevent="submit">
+    <div class="card-content">
+      <span class="card-title">Домашняя бухгалтерия</span>
+      <div class="input-field">
+        <input
+            id="email"
+            type="text"
+            v-model.trim="email"
+            :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}"
+        >
+        <div v-if="!$v.email.required">Email is required</div>
+        <div v-if="!$v.email.email">Email is email</div>
+        <label for="email">Email</label>
+        <small class="helper-text invalid">Email</small>
+      </div>
+      <div class="input-field">
+        <input
+            id="password"
+            type="password"
+            v-model.trim="password"
+            :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
+        >
+        <div v-if="!$v.password.required">Password is required</div>
+        <div v-if="!$v.password.minLength">Password is minLength</div>
+        <label for="password">Пароль</label>
+        <small class="helper-text invalid">Password</small>
+      </div>
+      <div class="input-field">
+        <input
+            id="name"
+            type="text"
+            v-model.trim="name"
+            :class="{invalid: ($v.password.$dirty && !$v.name.required) || ($v.name.$dirty && !$v.name.minLength)}"
+
+        >
+        <div v-if="!$v.name.required">Name is requred</div>
+        <div v-if="!$v.name.minLength">Name is minLength</div>
+        <label for="name">Имя</label>
+        <small class="helper-text invalid">Name</small>
+      </div>
+      <p>
+        <label>
+          <input
+              v-model="agree"
+              type="checkbox"
+          :class="{invalid:($v.agree)}"
+          />
+          <span>С правилами согласен</span>
+        </label>
+      </p>
+    </div>
+    <div class="card-action">
+      <div>
+        <button
+            class="btn waves-effect waves-light auth-submit"
+            type="submit"
+            :disabled="$v.$invalid"
+        >
+          Зарегистрироваться
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+
+      <p class="center">
+        Уже есть аккаунт?
+        <router-link to="/login">Войти!</router-link>
+      </p>
+    </div>
+  </form>
+</template>
+
+<script>
+
+
+import {required, minLength, email} from "vuelidate/lib/validators/";
+
+export default {
+  name: "Register",
+  data() {
+    return {
+      email: '',
+      password: '',
+      name: '',
+      agree:false
+    }
+  },
+  methods: {
+    submit() {
+      // console.log('$invalid', this.$v.$invalid)
+      // console.log('name', this.name)
+      // console.log('email', this.email)
+      // console.log('password', this.password)
+      if (this.$v.$invalid){
+        this.$v.$touch()
+        return
+      }
+      const formData={
+        name:this.name,
+        email:this.email,
+        password:this.password
+      }
+      M.toast({html:'I am toast'})
+      console.log('formadataregister',formData)
+      this.$router.push('/login')
+
+    }
+  },
+  validations: {
+    name: {required, minLength: minLength(5)},
+    email: {required, email},
+    password: {required, minLength: minLength(10)},
+    agree:{checked: v=>v}
+
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
